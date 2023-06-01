@@ -80,6 +80,31 @@ close c;
 end;
 /
 
+--array and loop
+set serveroutput on
+declare
+counter number;
+book_name2 books.title%type;
+TYPE NAMEARRAY IS VARRAY(5) OF books.title%type;
+A_NAME NAMEARRAY:=NAMEARRAY();
+begin
+counter:=1;
+for x in 1..5
+loop
+select title into book_name2 from books where book_id=x;
+A_NAME.EXTEND();
+A_NAME(counter):=book_name2;
+counter:=counter+1;
+end loop;
+counter:=1;
+WHILE counter<=A_NAME.COUNT
+LOOP
+DBMS_OUTPUT.PUT_LINE(A_NAME(counter));
+counter:=counter+1;
+END LOOP;
+end;
+/
+
 --function
 set SERVEROUTPUT on
 create or replace function fun( id number) return varchar as 
